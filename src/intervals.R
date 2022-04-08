@@ -1,3 +1,6 @@
+# load packages
+library(GenomicRanges)
+
 # Generates a random GRanges object
 #
 # You can use this function to get a random interval list for testing.
@@ -33,8 +36,30 @@ randomGRanges = function(){
 #'   countOverlapsSimple(query, database)  # returns 2
 countOverlapsSimple = function(query, database) {
 
-	# Implement this function
-
+  ## count overlap by filtering database
+  # d = database[(database$starts<= query$end & database$ends >= query$start),]
+  # n_overlaps = nrow(d)
+  
+  ## count overlap with sequential search, loop throgh the database
+	# initiate number of overlaps
+  n_overlaps = 0
+  # check if query interval is well-formed
+  if (query$start > query$end){
+    stop("query interval is not well-formed: start > end")
+  }
+  # loop through database
+  for (i in 1:nrow(database)){
+    # check if intervals are well-formed
+    if (database[i,]$starts > database[i,]$ends){
+      stop(paste0("interval #", i, " is not well-formed: start > end"))
+    }
+    # check overlap
+    if( database[i,]$starts <= query$end & database[i,]$ends >= query$start){
+      n_overlaps = n_overlaps + 1
+      }
+  }
+  
+    return (n_overlaps)
 }
 
 # Measure the Jaccard similarity between two interval sets
@@ -48,7 +73,14 @@ countOverlapsSimple = function(query, database) {
 # @return The Jaccard score (as numeric)
 calculateJaccardScore = function(gr1, gr2){
 
-	# Implement this function
+	# get the intersection
+  intersection = intersect(gr1, gr2)
+  # get the union
+  union = union(gr1, gr2)
+  # jaccard_score = size of intersection / size of union
+  jaccard_score = length(intersection)/length(union)
+  # return 
+  return (jaccard_score)
 }
 
 # Calculate pairwise Jaccard similarity among several interval sets
@@ -63,10 +95,20 @@ calculateJaccardScore = function(gr1, gr2){
 #' lst = replicate(10, randomGRanges())
 #' pairwiseJaccard(lst)
 pairwiseJaccard = function(lst) {
-	# Implement this function
-	# Compute the pairwise Jaccard Score and return in matrix form
-	# Return only 3 significant figures
+
+  # get the number of interval sets
+  n = length(lst)
+  # initiate matrix
+  matrix = matrix(data=NA, nrow=n, ncol=n)
+  # fill in the matrix
+  for(i in 1:n){
+    for(j in 1:n){
+      # calculate jaccard score
+      jaccard_score = calculateJaccardScore(lst[[i]], lst[[j]])
+      # Round the result to 3 significant figures
+      matrix[i,j] = signif(jaccard_score, digits = 3)
+    }
+  }
+  
+  return (matrix)
 }
-
-
-
