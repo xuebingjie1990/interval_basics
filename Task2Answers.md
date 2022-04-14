@@ -21,10 +21,8 @@ pairwise Jaccard similarity:
 
 3. Based on these results, which factor, CTCF or Jun, would you predict varies more across cell types? (10 pts)
 **Based on the results, Jun would vary more across cell types. 
-Because the Jaccard similarty of Jun ChIP-seq of the two given cell types (HepG2 and HeLaS3) is much lower than that of CTCF ChIP-seq.** 
+Because the difference in Jaccard similarty of Jun ChIP-seq of the two given cell types (HepG2 and HeLaS3) is much larger than the difference of CTCF ChIP-seq.** 
 
 4. Based on these results, do the genomic locations found by ChIP-seq experiments depend more on the cell-type, or on the transcription factor (tf) being assayed? (20 pts)
 **Based on the results, the genomic regions found by ChIP-seq experiments depends more on the TF. 
-Because the interval sets have highest Jaccard similarty (other than themselves) with interval sets resulted from ChIP-seq of the same TF and different cell type, 
-followed by same cell type and different TF. Interval sets of different TF and different cell type have the lowest Jaccard similarty score. 
-(except helas3_ctcf: helas3_ctcf vs hepg2_jun has higher Jaccard similarty score than helas3_ctcf vs helas3_jun)**
+Because the difference in Jaccard similarty between ChIP-seq of the different TF and same cell type is larger than the difference between same TF and different cell-type.**
